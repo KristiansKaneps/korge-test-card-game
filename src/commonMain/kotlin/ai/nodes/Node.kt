@@ -11,8 +11,6 @@ abstract class Node(
     override val children: ArrayList<INode> = ArrayList(),
     override val depth: Int = parent?.depth?.plus(1) ?: 0,
 ) : INode {
-    override var extra: Any? = null
-
     protected val state: State = state.copy()
     override fun currentState(): State = state
 
@@ -20,6 +18,9 @@ abstract class Node(
     override var isEvaluated: Boolean = false
     override var isExpanded: Boolean = false
 
+    /**
+     * Evaluates this node.
+     */
     override fun evaluate(game: Game): Float {
         // If the evaluation has already been calculated and is final, return it.
         if (isEvaluated && isExpanded) return evaluation
@@ -39,18 +40,24 @@ abstract class Node(
         return evaluation
     }
 
-
+    /**
+     * Heuristically evaluates the given player's hand.
+     */
     private fun heuristicHandEval(hand: CardHand): Float {
         val playerHandEval = (hand.cards.sumOf {
             if (it.suit == state.table.highSuit) {
-                100 + it.type.ordinal
+                100 + it.type.ordinal + 1
             } else {
-                it.type.ordinal
+                it.type.ordinal + 1
             }
         } + (hand.slots - hand.cards.size) * MAX_CARD_RANK)
+        println("Evaluating hand: $hand; eval=${playerHandEval.toFloat() / (max(hand.slots, hand.cards.size) * MAX_CARD_RANK)}")
         return playerHandEval.toFloat() / (max(hand.slots, hand.cards.size) * MAX_CARD_RANK)
     }
 
+    /**
+     * Heuristically evaluates this node.
+     */
     private fun heuristicEvaluation(game: Game): Float {
         val playerHandEval = heuristicHandEval(state.player.hand)
         val opponentHandEval = heuristicHandEval(state.opponent.hand)
@@ -62,6 +69,9 @@ abstract class Node(
         return evaluation
     }
 
+    /**
+     * Expands this node.
+     */
     override fun generate(game: Game) {
         if (isExpanded) return
         isExpanded = true
@@ -73,12 +83,12 @@ abstract class Node(
             return
         }
         if (state.table.stack.size == 0 && state.player.hand.size > 0 && state.opponent.hand.size == 0) {
-            evaluation = if (game.player1.name == state.player.name) -1.0f else 1.0f
+            evaluation = if (game.player1.name == state.player.name) 1.0f else -1.0f
             isEvaluated = true
             return
         }
         if (state.table.stack.size == 0 && state.player.hand.size == 0 && state.opponent.hand.size > 0) {
-            evaluation = if (game.player1.name == state.player.name) 1.0f else -1.0f
+            evaluation = if (game.player1.name == state.player.name) -1.0f else 1.0f
             isEvaluated = true
             return
         }
@@ -87,6 +97,10 @@ abstract class Node(
         generateNodes()
     }
 
+    /**
+     * Generates the children of this node.
+     * This method should be overridden by subclasses.
+     */
     abstract fun generateNodes()
 
     override fun toString(): String {
@@ -95,8 +109,8 @@ abstract class Node(
 
     companion object {
         /**
-         * High card rank is [100 + the ordinal value of the card type].
+         * High card rank is [100 + (the ordinal value + 1) of the card type].
          */
-        private val MAX_CARD_RANK = 100 + CardType.ACE.ordinal
+        private val MAX_CARD_RANK = 100 + (CardType.ACE.ordinal + 1)
     }
 }

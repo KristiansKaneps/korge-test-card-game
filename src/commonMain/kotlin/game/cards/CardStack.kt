@@ -1,5 +1,8 @@
 package game.cards
 
+/**
+ * Represents a stack of cards from which cards can be drawn.
+ */
 class CardStack(
     val deck: CardDeck,
     val cards: ArrayList<Card> = ArrayList(deck.cards.shuffled()),

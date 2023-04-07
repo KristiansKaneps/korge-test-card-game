@@ -7,6 +7,7 @@ class DefenseNode(
     override val parent: INode?,
 ) : Node(state, parent) {
     override fun generateNodes() {
+        // Player defended successfully => opponent can counter-attack or draw.
         children.add(PlayerNode(
             state = State(
                 table = state.table,

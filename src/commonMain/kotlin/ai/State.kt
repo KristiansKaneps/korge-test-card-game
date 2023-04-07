@@ -2,6 +2,9 @@ package ai
 
 import game.*
 
+/**
+ * Represents the state of the game at any given moment.
+ */
 class State(
     val table: Table,
     val player: IPlayer,

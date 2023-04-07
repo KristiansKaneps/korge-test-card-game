@@ -10,15 +10,20 @@ class PlayerNode(
 ) : Node(state, parent) {
     override fun generateNodes() {
         if (state.table.getAttackingCards().isEmpty()) {
+            // If there are no attacking cards, the player can either attack, counterattack or draw.
             if (state.table.board.isEmpty()) {
+                // If there are no cards, the player can only attack.
                 generateAttackNodes()
             } else {
+                // If there are cards, the player can counter-attack.
                 generateCounterAttackNodes()
-                // Opponent defended successfully => switch turns.
+                // If player doesn't want to or doesn't have any cards to counter-attack with,
+                // opponent defended successfully => switch turns.
                 if (parent is DefenseNode)
                     generateDrawNode()
             }
         } else {
+            // If there are attacking cards, the player can either defend or take up.
             generateTakeUpNode()
             generateDefenseNodes()
         }
@@ -28,6 +33,8 @@ class PlayerNode(
         val table = state.table.copy().apply { clear() }
         val player = state.player.copy()
         val opponent = state.opponent.copy()
+
+        // Opponent defended successfully.
         player.draw(table.stack::draw)
         opponent.draw(table.stack::draw)
         children.add(DrawNode(
@@ -47,8 +54,6 @@ class PlayerNode(
         @Suppress("NAME_SHADOWING")
         Combinatorics.combinationsUpToK(state.player.hand.cards.filter { boardCardTypes.contains(it.type) }, min(state.player.hand.size, state.opponent.hand.size))
             .reversed().forEach { move ->
-//                if (!newTable.canAttack(state.player, state.opponent, move)) return@forEach
-
                 val player = state.player.copy()
                 val opponent = state.opponent.copy()
                 val table = state.table.copy().apply { attack(player, opponent, move) }
@@ -67,6 +72,7 @@ class PlayerNode(
     private fun generateAttackNodes() {
         val player = state.player.copy()
 
+        // Attack with any combination of cards.
         @Suppress("NAME_SHADOWING")
         Combinatorics.groupByPossibleCardTypeMoves(state.player.hand.cards, min(player.hand.size, state.opponent.hand.size)).reversed().forEach { move ->
             val player = player.copy()
@@ -86,6 +92,7 @@ class PlayerNode(
         val player = state.player.copy()
         val opponent = state.opponent.copy()
 
+        // Take up cards and draw a new one.
         table.takeUp(opponent, player)
         opponent.draw(table.stack::draw)
 
@@ -126,11 +133,6 @@ class PlayerNode(
                 }
             }
 
-            val defenseMap: MutableMap<Card, Card> = HashMap()
-            table.board.forEach { (attackingCard, defendingCard) ->
-                defenseMap[attackingCard] = defendingCard!!
-            }
-
             children.add(DefenseNode(
                 state = State(
                     table = table,
@@ -138,9 +140,7 @@ class PlayerNode(
                     opponent = opponent,
                 ),
                 parent = this,
-            ).apply {
-                this.extra = defenseMap
-            })
+            ))
         }
     }
 }

@@ -10,11 +10,6 @@ interface INode {
     val children: List<INode>
 
     /**
-     * Extra data that can be used to understand the node.
-     */
-    var extra: Any?
-
-    /**
      * The state of the game at this node.
      */
     fun currentState(): State

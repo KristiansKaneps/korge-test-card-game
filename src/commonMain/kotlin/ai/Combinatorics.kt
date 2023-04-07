@@ -10,15 +10,13 @@ object Combinatorics {
         }
     }
 
-    fun <T> variations(from: Collection<T>, k: Int): Collection<Collection<T>> {
-        return combinations(from, k).flatMap { combination ->
+    fun <T> variations(from: Collection<T>, k: Int): Collection<Collection<T>> =
+        combinations(from, k).flatMap { combination ->
             permutations(combination)
         }
-    }
 
-    fun <T> variationsUpToK(from: Collection<T>, k: Int): Collection<Collection<T>> {
-        return (1..k).flatMap { variations(from, it) }
-    }
+    fun <T> variationsUpToK(from: Collection<T>, k: Int): Collection<Collection<T>> =
+        (1..k).flatMap { variations(from, it) }
 
     fun <T> combinations(from: Collection<T>, k: Int): Collection<Collection<T>> {
         if (k == 0) return listOf(emptySet())
@@ -28,16 +26,17 @@ object Combinatorics {
         return combinations(tail, k - 1).map { setOf(head) + it } + combinations(tail, k)
     }
 
-    fun <T> combinationsUpToK(from: Collection<T>, k: Int): Collection<Collection<T>> {
-        return (1..k).flatMap { combinations(from, it) }
-    }
+    fun <T> combinationsUpToK(from: Collection<T>, k: Int): Collection<Collection<T>> =
+        (1..k).flatMap { combinations(from, it) }
 
-    fun groupByCardType(cards: Collection<Card>): Collection<Collection<Card>> {
-        return cards.groupBy { it.type }.values
-    }
+    fun groupByCardType(cards: Collection<Card>): Collection<Collection<Card>> =
+        cards.groupBy { it.type }.values
 
-    fun groupByPossibleCardTypeMoves(cards: Collection<Card>, maxSize: Int = cards.size): Collection<Collection<Card>> {
-        if(maxSize == 0) return emptyList()
+    fun groupByPossibleCardTypeMoves(
+        cards: Collection<Card>,
+        maxSize: Int = cards.size,
+    ): Collection<Collection<Card>> {
+        if (maxSize == 0) return emptyList()
         val groups = cards.groupBy { it.type }.values
         val result = mutableListOf<Collection<Card>>()
 
@@ -45,12 +44,11 @@ object Combinatorics {
         groups.forEach { cards ->
             if (cards.size > 1) {
                 cards.forEach { card -> result.add(setOf(card)) }
-                (2 .. maxSize).forEach { k ->
+                (2..maxSize).forEach { k ->
                     combinations(cards, k).forEach { result.add(it) }
                 }
-            } else {
+            } else
                 result.add(cards)
-            }
         }
 
         return result

@@ -5,9 +5,9 @@ Based on a Latvian card game "cūkas" or "duraks".
 This is a test project written in Kotlin with KorGE for school purposes.
 It is not optimized for performance or anything else.
 KorGE has a lot of features that are not used in this project.
-Only a subset of features is used and in a very simple/inefficient way.
+Only a subset of features is used and in a very simple/inefficient way - _can contain UI bugs._
 
-Game state graph is generated on the fly and is not stored anywhere,
+Game state space graph is generated on the fly and is not stored anywhere,
 but it could be optimized to use less memory.
 
 ## Build
@@ -35,6 +35,9 @@ If the deck runs out before either player can get rid of all of their cards, the
 
 The game also has high cards which are determined by the suit of the high card that is face up under the deck of cards (the last card in the deck).
 With high cards you can always defeat any other card except the ones with the same suit as the high card, for which the same rules apply as with regular cards.
+
+## Example illustration of the game state space graph
+![Game state space graph illustration](game-state-graph.png)
 
 # Demo
 - [As a webapp](https://cardgame.kristianskaneps.lv/)

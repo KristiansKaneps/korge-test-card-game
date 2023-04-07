@@ -7,6 +7,7 @@ class DrawNode(
     override val parent: INode?,
 ) : Node(state, parent) {
     override fun generateNodes() {
+        // Opponent defended successfully => switch turns.
         children.add(PlayerNode(
             state = State(
                 table = state.table,

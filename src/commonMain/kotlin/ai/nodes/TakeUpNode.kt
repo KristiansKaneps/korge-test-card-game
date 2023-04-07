@@ -7,6 +7,7 @@ class TakeUpNode(
     override val parent: INode?,
 ) : Node(state, parent) {
     override fun generateNodes() {
+        // Player took up the cards => switch turns.
         children.add(PlayerNode(
             state = State(
                 table = state.table,

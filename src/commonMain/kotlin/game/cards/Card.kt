@@ -4,8 +4,6 @@ class Card(
     val type: CardType,
     val suit: CardSuit,
 ) {
-
-
     fun toPrettyString(): String = "${suit.symbol}${type.symbol}"
     override fun toString(): String = "${suit.initialChar}${type.symbol}"
     override fun equals(other: Any?): Boolean =

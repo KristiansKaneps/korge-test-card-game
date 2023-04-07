@@ -66,13 +66,9 @@ class AIPlayer(
         }
     }
 
-    override fun copy(): IPlayer {
-        return AIPlayer(name, tree).apply {
+    override fun copy(): IPlayer = AIPlayer(name, tree).apply {
             hand = this@AIPlayer.hand.copy()
-        }
     }
 
-    override fun toString(): String {
-        return "AIPlayer(name='$name'; hand=$hand)"
-    }
+    override fun toString(): String = "AIPlayer(name='$name'; hand=$hand)"
 }

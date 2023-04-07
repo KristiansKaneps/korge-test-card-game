@@ -12,13 +12,9 @@ open class Player(
         hand.take(cards)
     }
 
-    override fun copy(): IPlayer {
-        return Player(name).apply {
-            hand = this@Player.hand.copy()
-        }
+    override fun copy(): IPlayer = Player(name).apply {
+        hand = this@Player.hand.copy()
     }
 
-    override fun toString(): String {
-        return "Player(name='$name'; hand=$hand)"
-    }
+    override fun toString(): String = "Player(name='$name'; hand=$hand)"
 }

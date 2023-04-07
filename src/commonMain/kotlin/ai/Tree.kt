@@ -3,9 +3,16 @@ package ai
 import ai.nodes.*
 import game.*
 
+/**
+ * Represents the game tree.
+ * @param deltaDepth The amount of depth to generate at a time.
+ */
 class Tree(
-    var deltaDepth: Int = 10,
+    var deltaDepth: Int = 9,
 ) {
+    /**
+     * The root node of the tree. Can change as the tree is generated.
+     */
     lateinit var root: INode
 
     fun generate(game: Game) {
@@ -46,7 +53,6 @@ class Tree(
                 println("Currently generating at depth=$currentDepth")
             }
             waiting.addAll(node.children)
-//            println("Generated ${node.type.name}, remaining: ${waiting.size}, depth: ${node.depth},\t children: ${node.children.size},\t card count: ${node.currentState().table.stack.size}, ${node.currentState().player.hand.size}, ${node.currentState().opponent.hand.size}")
         }
 
         // Finally, evaluate all the nodes by evaluating the root node.
