@@ -4,8 +4,6 @@ import com.soywiz.korge.input.*
 import com.soywiz.korge.scene.*
 import com.soywiz.korge.ui.*
 import com.soywiz.korge.view.*
-import com.soywiz.korim.text.*
-import com.soywiz.korio.async.*
 
 class ResultScene(
     val text: String,
@@ -26,15 +24,7 @@ class ResultScene(
         backToMenu = uiButton(label = "Exit to menu", width = buttonWidth, height = buttonHeight) {
             position(buttonX, buttonY)
             onClick {
-                sceneContainer.changeTo({
-                    MenuScene({
-                        sceneContainer.views.gameWindow.close()
-                    }) { game ->
-                        launchImmediately {
-                            sceneContainer.changeTo({ GameScene(game) })
-                        }
-                    }
-                })
+                sceneContainer.changeTo<MenuScene>()
             }
         }
     }

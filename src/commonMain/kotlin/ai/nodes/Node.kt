@@ -51,7 +51,6 @@ abstract class Node(
                 it.type.ordinal + 1
             }
         } + (hand.slots - hand.cards.size) * MAX_CARD_RANK)
-        println("Evaluating hand: $hand; eval=${playerHandEval.toFloat() / (max(hand.slots, hand.cards.size) * MAX_CARD_RANK)}")
         return playerHandEval.toFloat() / (max(hand.slots, hand.cards.size) * MAX_CARD_RANK)
     }
 
