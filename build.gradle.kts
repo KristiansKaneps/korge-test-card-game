@@ -6,6 +6,11 @@ plugins {
 
 korge {
 	id = "lv.kristianskaneps.rtu.mipamati.game"
+    name = "CardGame"
+    version = "0.0.1"
+
+    copyright = "Copyright (c) 2023 Kristiāns Jānis Kaņeps"
+
 	supportBox2d()
 // To enable all targets at once
 
